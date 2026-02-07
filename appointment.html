@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Appointment - Angelina</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="appointment.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="toggle theme">
+        <ion-icon name="moon-outline" class="moon-icon"></ion-icon>
+        <ion-icon name="sunny-outline" class="sun-icon"></ion-icon>
+    </button>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2300f0ff'/%3E%3Ctext x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='%23000'%3EA%3C/text%3E%3C/svg%3E" alt="Angelina home" class="logo-img">
+                <span class="logo-text">Angelina</span>
+            </a>
+
+            <a href="index.html" class="btn-primary">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Appointment Section -->
+    <section class="appointment-section">
+        <div class="container">
+            <div class="appointment-wrapper">
+                <div class="appointment-header">
+                    <span class="section-subtitle">Book Your Project</span>
+                    <h1 class="section-title">Make an Appointment</h1>
+                    <p class="appointment-desc">Fill out the form below and we'll get back to you within 24 hours to discuss your project requirements.</p>
+                </div>
+
+                <form class="appointment-form" id="appointmentForm">
+                    <div class="form-grid">
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Personal Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="middleName">Middle Name</label>
+                                    <input type="text" id="middleName" name="middleName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="surname">Surname *</label>
+                                <input type="text" id="surname" name="surname" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Contact Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp Number *</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+234 XXX XXX XXXX" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+234 XXX XXX XXXX" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Location *</label>
+                                <input type="text" id="location" name="location" placeholder="City, State" required>
+                            </div>
+                        </div>
+
+                        <!-- Project Details -->
+                        <div class="form-section full-width">
+                            <h3 class="form-section-title">Project Details</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="work">Type of Work *</label>
+                                    <select id="work" name="work" required>
+                                        <option value="">Select Service...</option>
+                                        <option value="graphics">Graphics Design</option>
+                                        <option value="invitations">Online Invitations & Cards</option>
+                                        <option value="ecommerce">E-Commerce Website</option>
+                                        <option value="booking">E-Booking Website</option>
+                                        <option value="advertising">Advertising Pages & Flyers</option>
+                                        <option value="custom-web">Custom Web Development</option>
+                                        <option value="landing">Landing Page</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ranking">Project Ranking *</label>
+                                    <select id="ranking" name="ranking" required>
+                                        <option value="">Select Package...</option>
+                                        <option value="basic">Basic - Simple design & functionality</option>
+                                        <option value="landing">Landing Page - Single page showcase</option>
+                                        <option value="advance">Advance - Enhanced features & design</option>
+                                        <option value="premium">Premium - Full-featured solution</option>
+                                        <option value="ecommerce">E-Commerce - Online store setup</option>
+                                        <option value="enterprise">Enterprise - Large-scale project</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="budget">Estimated Budget</label>
+                                <select id="budget" name="budget">
+                                    <option value="">Select Budget Range...</option>
+                                    <option value="under-50k">Under ₦50,000</option>
+                                    <option value="50k-100k">₦50,000 - ₦100,000</option>
+                                    <option value="100k-200k">₦100,000 - ₦200,000</option>
+                                    <option value="200k-500k">₦200,000 - ₦500,000</option>
+                                    <option value="above-500k">Above ₦500,000</option>
+                                    <option value="flexible">Flexible</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeline">Preferred Timeline</label>
+                                <select id="timeline" name="timeline">
+                                    <option value="">Select Timeline...</option>
+                                    <option value="urgent">Urgent (Within 1 week)</option>
+                                    <option value="1-2weeks">1-2 Weeks</option>
+                                    <option value="2-4weeks">2-4 Weeks</option>
+                                    <option value="1-2months">1-2 Months</option>
+                                    <option value="flexible">Flexible</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Project Description *</label>
+                                <textarea id="description" name="description" rows="6" placeholder="Please describe your project requirements, goals, and any specific features you need..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reference">Reference Links/Examples</label>
+                                <textarea id="reference" name="reference" rows="3" placeholder="Share any websites, designs, or examples that inspire your project (optional)"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="form-section full-width">
+                            <h3 class="form-section-title">Additional Information</h3>
+                            
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="maintenance" id="maintenance">
+                                    <span class="checkbox-custom"></span>
+                                    <span>I'm interested in ongoing maintenance & support</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="hosting" id="hosting">
+                                    <span class="checkbox-custom"></span>
+                                    <span>I need help with domain & hosting setup</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="seo" id="seo">
+                                    <span class="checkbox-custom"></span>
+                                    <span>I'm interested in SEO optimization services</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hear">How did you hear about us?</label>
+                                <select id="hear" name="hear">
+                                    <option value="">Select...</option>
+                                    <option value="google">Google Search</option>
+                                    <option value="social">Social Media</option>
+                                    <option value="referral">Referral</option>
+                                    <option value="advertisement">Advertisement</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">
+                            <ion-icon name="send-outline"></ion-icon>
+                            <span>Submit Appointment Request</span>
+                        </button>
+                        <button type="reset" class="btn-reset">
+                            <ion-icon name="refresh-outline"></ion-icon>
+                            <span>Reset Form</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-content">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                        <h3>Appointment Request Submitted!</h3>
+                        <p>Thank you for your interest. We'll review your request and get back to you within 24 hours.</p>
+                        <button class="btn-primary" onclick="location.reload()">Submit Another Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Info -->
+    <section class="contact-info">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-card">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <h4>Email Us</h4>
+                    <p><a href="mailto:angelodawkins010@gmail.com">angelodawkins010@gmail.com</a></p>
+                </div>
+
+                <div class="info-card">
+                    <ion-icon name="call-outline"></ion-icon>
+                    <h4>Call Us</h4>
+                    <p><a href="tel:+2349129552644">+234 912 955 2644</a></p>
+                </div>
+
+                <div class="info-card">
+                    <ion-icon name="logo-whatsapp"></ion-icon>
+                    <h4>WhatsApp</h4>
+                    <p><a href="https://wa.me/2349129552644">+234 912 955 2644</a></p>
+                </div>
+
+                <div class="info-card">
+                    <ion-icon name="map-outline"></ion-icon>
+                    <h4>Visit Us</h4>
+                    <p>Oda Road, Akure</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="back to top">
+        <ion-icon name="chevron-up"></ion-icon>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="appointment.js"></script>
+</body>
+</html>

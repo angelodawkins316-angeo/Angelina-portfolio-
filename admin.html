@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Angelina</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-container {
+            padding: 140px 20px 60px;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            padding: 32px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .appointments-table {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-group select {
+            padding: 12px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-primary);
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr {
+            transition: background var(--transition-fast);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-primary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .status-accepted {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .status-completed {
+            background: rgba(0, 240, 255, 0.2);
+            color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-view {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-view:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-accept {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .btn-reject {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-close {
+            font-size: 32px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .detail-group {
+            margin-bottom: 20px;
+        }
+
+        .detail-label {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            color: var(--text-secondary);
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2300f0ff'/%3E%3Ctext x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='%23000'%3EA%3C/text%3E%3C/svg%3E" alt="Angelina home" class="logo-img">
+                <span class="logo-text">Angelina Admin</span>
+            </a>
+            <button class="btn-primary" onclick="location.href='index.html'">Back to Site</button>
+        </div>
+    </header>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="section-title">Admin Dashboard</h1>
+                <p style="color: var(--text-secondary);">Manage appointments and view statistics</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalAppointments">0</h3>
+                    <p>Total Appointments</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="pendingAppointments">0</h3>
+                    <p>Pending</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="acceptedAppointments">0</h3>
+                    <p>Accepted</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="completedAppointments">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+
+            <!-- Appointments Table -->
+            <div class="appointments-table">
+                <div class="table-header">
+                    <h2>Recent Appointments</h2>
+                    <div class="filter-group">
+                        <select id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <select id="workTypeFilter">
+                            <option value="">All Services</option>
+                            <option value="graphics">Graphics Design</option>
+                            <option value="invitations">Invitations</option>
+                            <option value="ecommerce">E-Commerce</option>
+                            <option value="booking">E-Booking</option>
+                            <option value="advertising">Advertising</option>
+                            <option value="custom-web">Custom Web</option>
+                        </select>
+                    </div>
+                </div>
+                <table id="appointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Service</th>
+                            <th>Package</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Appointment Details</h2>
+                <ion-icon name="close-outline" class="modal-close" onclick="closeModal()"></ion-icon>
+            </div>
+            <div id="modalBody">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load appointments from localStorage (demo)
+        function loadAppointments() {
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            
+            // Update statistics
+            document.getElementById('totalAppointments').textContent = appointments.length;
+            document.getElementById('pendingAppointments').textContent = 
+                appointments.filter(a => a.status === 'pending').length;
+            document.getElementById('acceptedAppointments').textContent = 
+                appointments.filter(a => a.status === 'accepted').length;
+            document.getElementById('completedAppointments').textContent = 
+                appointments.filter(a => a.status === 'completed').length;
+
+            // Display appointments
+            displayAppointments(appointments);
+        }
+
+        function displayAppointments(appointments) {
+            const tbody = document.getElementById('appointmentsBody');
+            
+            if (appointments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">No appointments found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = appointments.map(apt => `
+                <tr>
+                    <td>#${apt.id}</td>
+                    <td>${apt.firstName} ${apt.surname}</td>
+                    <td>${apt.email}</td>
+                    <td>${formatWorkType(apt.work)}</td>
+                    <td>${apt.ranking}</td>
+                    <td><span class="status-badge status-${apt.status || 'pending'}">${apt.status || 'pending'}</span></td>
+                    <td>${new Date(apt.timestamp).toLocaleDateString()}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-view" onclick="viewAppointment(${apt.id})">View</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function formatWorkType(type) {
+            const types = {
+                'graphics': 'Graphics Design',
+                'invitations': 'Invitations',
+                'ecommerce': 'E-Commerce',
+                'booking': 'E-Booking',
+                'advertising': 'Advertising',
+                'custom-web': 'Custom Web',
+                'landing': 'Landing Page'
+            };
+            return types[type] || type;
+        }
+
+        function viewAppointment(id) {
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const apt = appointments.find(a => a.id === id);
+            
+            if (!apt) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="detail-group">
+                    <div class="detail-label">Client Name</div>
+                    <div class="detail-value">${apt.firstName} ${apt.middleName || ''} ${apt.surname}</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">${apt.email}</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Phone / WhatsApp</div>
+                    <div class="detail-value">${apt.phone} / ${apt.whatsapp}</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value">${apt.location}</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Service</div>
+                    <div class="detail-value">${formatWorkType(apt.work)}</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Package</div>
+                    <div class="detail-value">${apt.ranking}</div>
+                </div>
+                ${apt.budget ? `
+                <div class="detail-group">
+                    <div class="detail-label">Budget</div>
+                    <div class="detail-value">${apt.budget}</div>
+                </div>
+                ` : ''}
+                ${apt.timeline ? `
+                <div class="detail-group">
+                    <div class="detail-label">Timeline</div>
+                    <div class="detail-value">${apt.timeline}</div>
+                </div>
+                ` : ''}
+                <div class="detail-group">
+                    <div class="detail-label">Project Description</div>
+                    <div class="detail-value">${apt.description}</div>
+                </div>
+                ${apt.reference ? `
+                <div class="detail-group">
+                    <div class="detail-label">References</div>
+                    <div class="detail-value">${apt.reference}</div>
+                </div>
+                ` : ''}
+                <div class="detail-group">
+                    <div class="detail-label">Additional Services</div>
+                    <div class="detail-value">
+                        ${apt.maintenance ? '✓ Maintenance, ' : ''}
+                        ${apt.hosting ? '✓ Hosting, ' : ''}
+                        ${apt.seo ? '✓ SEO' : ''}
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Submitted</div>
+                    <div class="detail-value">${new Date(apt.timestamp).toLocaleString()}</div>
+                </div>
+            `;
+
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Filters
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('workTypeFilter').addEventListener('change', applyFilters);
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const workTypeFilter = document.getElementById('workTypeFilter').value;
+            
+            let appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            
+            if (statusFilter) {
+                appointments = appointments.filter(a => a.status === statusFilter);
+            }
+            
+            if (workTypeFilter) {
+                appointments = appointments.filter(a => a.work === workTypeFilter);
+            }
+            
+            displayAppointments(appointments);
+        }
+
+        // Load on page load
+        loadAppointments();
+
+        // Refresh every 30 seconds
+        setInterval(loadAppointments, 30000);
+    </script>
+</body>
+</html>
